@@ -1,0 +1,66 @@
+Errores,Correcciones,Etiquetas
+hola hola,Hola,elección_de_palabras
+qué andas haciendo,¿qué estás haciendo?,"elección_de_palabras, ser/estar"
+aquí estamos para hablar de lo que sea cuéntame,"Aquí estamos para hablar de lo que sea. Cuéntame,","puntuación, orden_de_palabras"
+"mi hija, mi mujer",mi hija y mi mujer,concordancia_de_género
+bueno,,otro
+no sé qué,no sé qué es lo que,elección_de_palabras
+totilla,tortilla,['elección_de_palabras']
+realmente no sos por salir a comer,realmente no somos de salir a comer,"['elección_de_palabras', 'ser/estar']"
+realmente lo que nos gusta más es estar en casa tranquilamente,lo que más nos gusta es estar en casa tranquilamente,['lo/el/la_que']
+bien,bueno,['elección_de_palabras']
+y eso,,['otro']
+claro,por supuesto,['elección_de_palabras']
+se pone poco pesada,se pone un poco pesada,['concordancia_de_género']
+fin de ver,fin de semana veremos,"['ser/estar', 'elección_de_palabras']"
+depende poco en el tiempo,depende del tiempo,['preposición']
+si hace bueno,si hace buen tiempo,['adverbio']
+unos minutos,unos momentos,elección_de_palabras
+ver que,ver qué,ortografía
+le voy a ir,voy a ir,['pronombre_directo/indirecto']
+Falta de coma después de 'Hola',"Hola, buenas noches.",Puntuación
+Falta de punto después de 'noches',"Hola, buenas noches.",Puntuación
+a Altair,en Altair,['preposición']
+falta de punto después de 'afternoon',"Hello, good afternoon.",puntuación
+uso incorrecto de 'a coffee',drinking coffee,elección_de_palabras
+falta de coma después de 'drawing',"and drawing,",puntuación
+uso innecesario de 'to' después de 'trying',and I'm trying to talk to you.,elección_de_palabras
+hola hola,Hola,elección_de_palabras
+montor,mucho,elección_de_palabras
+hace lugar para ti,¿Te viene bien?,elección_de_palabras
+como hace,¿No hace?,elección_de_palabras
+Cerque,Cerca,Elección de palabras
+un montón,mucho,Elección de palabras
+¿Qué haces?,¿Qué estás haciendo?,Tiempo verbal
+Qué tal estás,Cómo estás,elección_de_palabras
+porque fuera duele mucho y bueno hace bastante mal hoy,porque afuera hace mucho frío y hoy está bastante mal tiempo,elección_de_palabras
+para ti qué tiempo tienes,tú qué tiempo hace,elección_de_palabras
+el capital,la capital,['artículo']
+realidad,en realidad,['adverbio']
+vivo,en realidad vivo,['orden_de_palabras']
+Ninguno,Ninguna,otro
+tal estamos,estás,"['ser/estar', 'elección_de_palabras']"
+tal estamos,cómo estás,['elección_de_palabras']
+buenos tardes,buenas tardes,elección_de_palabras
+¿qué tal estamos?,¿cómo estás?,elección_de_palabras
+Me estoy bien,También estoy bien,['elección_de_palabras']
+Estamos,Estás,['ser/estar']
+sobre,de,['preposición']
+Corea Norte,Corea del Norte,['elección_de_palabras']
+ahí,allí,['adverbio']
+he leído sobre este,haya leído sobre esto,['subjuntivo']
+viene,viene,['ser/estar']
+habían robado,ha robado,['tiempo_verbal']
+dinero,dólares,['elección_de_palabras']
+críptomos,criptomonedas,['elección_de_palabras']
+edad,antiguas,['elección_de_palabras']
+me queda,me quedo,['tiempo_verbal']
+confuso,confundido,['concordancia_de_género']
+N/A,Hemos terminado.,N/A
+si tal estamos,¿cómo estás?,elección_de_palabras
+Ninguno,Hemos terminado.,otro
+te hago,haces,elección_de_palabras
+¿Estás?,¿Estás bien?,elección_de_palabras
+Hemos terminado,Hemos terminado.,['puntuación']
+No hay errores,No hay correcciones,otro
+hemos terminado,Hemos terminado,"['mayúscula', 'verbo']"

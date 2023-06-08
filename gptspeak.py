@@ -1,68 +1,59 @@
+# import libraries
 import gradio as gr
-import requests
-import whisper
-import openai
+import threading
 import time
-import pyttsx3
+import tensorflow as tf
 
-import api_key
+# import local modules
+import functions
+import error_table
+import transcribe
+import chat_mode
 
-openai.api_key = api_key.API_KEY
-
-# whisper model
-model = whisper.load_model("small")
 
 
-# set up the gpt3.5 model system prompt
-#content = 'As a Spanish teacher and language assistant, you will be teaching and assisting a native English-speaking student who has an intermediate-advanced level of Spanish. The student will communicate with you in Spanish using voice-to-text technology, which may result in transcription errors. Each of your responses will consist of two parts: the first part, labeled "inference," will indicate what you infer the text should have been, considering any transcription errors. If you do not infer any errors in transcription, the "inference" text will simply be "OK." After providing your inference, you will give your "response", simulating a conversation in Spanish. This will continue until the student says "conversation over." At this point, you will analyze the conversation and create a bullet-point summary of any grammar errors or tips for improving the choice of words.'
-content = 'As a Spanish teacher and language assistant, you will be teaching and assisting a native English-speaking student. The student will communicate with you in Spanish using voice-to-text technology, which may result in transcription errors. You will give short but naturalist responses in Spanish, taking into account any possible transcription errors, that allow a conversation to flow. This will continue until the student says "hemos terminado." At this point, you will analyze the conversation and create a bullet-point summary of any grammar errors or tips for improving the choice of words.'
-
-# keep a record of the conversation
-messages = [{"role": "system", "content": content}]
-
-# tokens
-tokens = []
-
+# initialise chat with system prompt
+messages = chat_mode.initialise_chat()
 
 def voice_gpt_conversation(audio):
     start = time.time()
     
+    print('#'*50)
     print("starting conversation round")
+    ######################## TRANSCRIBE ##################################################
     # get transcription from small model setting to spanish
-    transcription = model.transcribe(audio, task = "transcribe", language = "es", fp16 = False, beam_size = 5)['text']
-    print(f"finished decoding. {time.time() - start}")
-    print(transcription)
-
+    transcription = transcribe.transcribe_faster_whisper(audio)
+    # time the transcription process
+    whisper_end_time = functions.time_stage(start, "whisper transcription")
+    ##################### ERROR IDENTIFICATION ###########################################
+    # using GPT to carry out error checking on user text and add rows to correction and error tables.
+    thread = threading.Thread(target = error_table.error_wrapper(conversation = messages, transcription = transcription))
+    # Start the thread to run in background while we continue with main chat function
+    thread.start()
+    ###################### APPEND USER TEXT TO MESSAGES ##################################
     # add the user text to the messages list
     messages.append({"role": "user", "content": transcription})
-
-    print(f"calling to gpt. {time.time() - start}")
-    
-    # now we make the call to gpt3.5 and get the response
-    response = openai.ChatCompletion.create(model = "gpt-3.5-turbo", messages = messages)
-
-    print(f"finished call to gpt. {time.time() - start}")
-
+    ################### CALL GPT CHAT ####################################################
+    # now we make the call to GPT conversation partner or create the summary of conversation
+    if transcription.lower().replace('.','').strip() == "hemos terminado":
+        response = chat_mode.get_conversation_summary(messages)
+    else:
+        response = chat_mode.get_chat_response(messages)
+    # time taken to get GPT response
+    _ = functions.time_stage(whisper_end_time, "GPT response")
+    #################### APPEND GPT RESPONSE TO MESSAGES #################################
     # add the response to the messages list
-    system_message = response["choices"][0]["message"]
-    messages.append(system_message)
-
-    engine = pyttsx3.init()
-    voices = engine.getProperty('voices')
-    engine.setProperty('voice', voices[0].id)
-    engine.say(system_message['content'])
-    engine.runAndWait()
-
-    # add the total tokens to the tokens list
-    tokens.append(int(response['usage']['total_tokens']))
-
-    print(tokens, sum(tokens))
-
+    messages.append(response)
+    #################### VOICE SYNTHESIS GPT RESPONSE ####################################
+    functions.speak(response["content"])
+    #################### PRINT CONVERSATION TO SCREEN ####################################
     chat_transcript = ""
     for message in messages:
         if message['role'] != 'system':
             chat_transcript += message['role'] + ": " + message['content'] + "\n\n"
-
+    # time full round
+    _ = functions.time_stage(start, "end conversation round")
+    
     return chat_transcript
 
 
@@ -70,7 +61,9 @@ audio_input = gr.Audio(source = "microphone", type = "filepath")
 output = gr.outputs.Textbox()
 
 
-gr.Interface(fn = voice_gpt_conversation, inputs = audio_input, outputs = output, title = "Whisper My Spanish").launch()
+interface = gr.Interface(fn = voice_gpt_conversation, inputs = audio_input, outputs = output, title = "Whisper My Spanish")
+
+interface.launch()
 
 
 

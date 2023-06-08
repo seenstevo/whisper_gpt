@@ -1,5 +1,6 @@
 whisper_gpt3.ipynb
-api_key.py
 flagged/
 __pycache__/
 whisper_gpt.code-workspace
+config.ini
+speak.mp3
